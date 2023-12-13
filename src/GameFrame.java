@@ -47,32 +47,42 @@ public class GameFrame extends JFrame {
     }
 
     private void initializeGame() {
+        // Generera ett nytt slumpmässigt nummer för spelet
         correctNumber = random.nextInt(101);
+        // Återställ resultatetiketten och panelbakgrunden
         resultLabel.setText("");
         containerPanel.setBackground(Color.WHITE);
+        // Återställ antalet försök
+        numberOfTries = 0;
     }
 
     private void handleGuess() {
         try {
+            // Hämta gissningen från textfieldet
             int guess = Integer.parseInt(guessField.getText());
             numberOfTries++;
-
+            // Evaluterar gissningen och uppdatera resultlabel
             String result = evaluateGuess(guess, correctNumber);
             resultLabel.setText(result);
 
+            //Om gissningen är korrekt ändras bakgrund till grön
             if (result.equals("Correct!")) {
                 containerPanel.setBackground(Color.GREEN);
+                // Om spelaren gissat rätt visa en dialogruta med antal försök det tog
                 JOptionPane.showMessageDialog(
                         this,
                         "Congratulations! You guessed the correct number in " + numberOfTries + " tries.",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE
                 );
+                // Starta om spelet efter att spelaren gissat rätt
                 initializeGame();
             } else {
+                // Om gissningen är fel, ändra panelbakgrunden till röd
                 containerPanel.setBackground(Color.RED);
                 guessField.setText("");
             }
+            // Om användaren inte matar in ett giltigt nummer
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Please enter a valid number.");
         }
